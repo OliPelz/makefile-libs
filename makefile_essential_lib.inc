@@ -45,11 +45,11 @@ download_file:
 	@mkdir -p $(dir $(TARGET_FILE)); \
 	if [ ! -f "$(TARGET_FILE)" ]; then \
 		echo "File $(TARGET_FILE) does not exist. Downloading..."; \
-		curl  --ssl-no-revoke -o "$(TARGET_FILE)" "$(DOWNLOAD_URL)"; \
+		curl -o "$(TARGET_FILE)" "$(DOWNLOAD_URL)"; \
 	else \
 		echo "File $(TARGET_FILE) already exists. Checking for updates..."; \
 		TEMP_FILE=$$(mktemp); \
-		curl  --ssl-no-revoke -o "$$TEMP_FILE" "$(DOWNLOAD_URL)"; \
+		curl -o "$$TEMP_FILE" "$(DOWNLOAD_URL)"; \
 		if ! cmp -s "$(TARGET_FILE)" "$$TEMP_FILE"; then \
 			echo "File is different. Replacing $(TARGET_FILE)..."; \
 			mv "$$TEMP_FILE" "$(TARGET_FILE)"; \

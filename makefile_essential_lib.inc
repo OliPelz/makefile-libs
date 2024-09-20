@@ -1,15 +1,22 @@
-# v.0.001
-# created by oliverpelz@gmail.com
+# v.0.0001
+
+# default Makefile behaviour
+# example usage:
+# 
+# 
+# maintained by: oliverpelz@gmail.com
+
 
 prompt_me:
 	@echo -n "Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
 
-
 rootPath       :=  $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
+# default shell in makefile is sh, which is not sufficient for me
+SHELL := bash
 
-.DEFAULT_GOAL := help
-SHELL         :=    /bin/bash
+.DEFAULT_GOAL  := help
+SHELL          := /bin/bash
 .PHONY:  help
 FORCE:
 
@@ -31,9 +38,9 @@ help: ##### show this help
 	@echo ''
 	@echo 'Targets:'
 	@awk 'BEGIN {FS = ":.*?## "} { \
-		if (/^[a-zA-Z_0-9\.-]+:.*?[^#]##[^#].*$$/) {printf "      ${RED}%-20s${RESET}${GREEN}%s${RESET}\n", $$1, $$2} \
-		else if (/^[a-zA-Z0-9_\.-]+:.*?[^#]###[^#].*$$/) {printf "      ${YELLOW}%-20s${WHITE}%s${RESET}\n", $$1, $$2} \
-		else if (/^[a-zA-Z0-9_\.-]+:.*?[^#]####[^#].*$$/) {printf "      ${CYAN}%-20s${WHITE}%s${RESET}\n", $$1, $$2} \
-		else if (/^[a-zA-Z0-9_\.-]+:.*?[^#]#####[^#].*$$/) {printf "      ${GREY}%-20s${WHITE}%s${RESET}\n", $$1, $$2} \
+		if (/^[a-zA-Z_0-9\.-]+:.*?[^#]##[^#].*$$/) {printf "      ${RED}%-30s${RESET}${GREEN}%s${RESET}\n", $$1, $$2} \
+		else if (/^[a-zA-Z0-9_\.-]+:.*?[^#]###[^#].*$$/) {printf "      ${YELLOW}%-30s${WHITE}%s${RESET}\n", $$1, $$2} \
+		else if (/^[a-zA-Z0-9_\.-]+:.*?[^#]####[^#].*$$/) {printf "      ${CYAN}%-30s${WHITE}%s${RESET}\n", $$1, $$2} \
+		else if (/^[a-zA-Z0-9_\.-]+:.*?[^#]#####[^#].*$$/) {printf "      ${GREY}%-30s${WHITE}%s${RESET}\n", $$1, $$2} \
 		else if (/^## .*:.*$$/) {printf "  ${DARKGREEN}%s${RESET}\n", substr($$1,4)} \
 		}' $(call reverse, $(MAKEFILE_LIST))

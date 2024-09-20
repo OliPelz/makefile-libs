@@ -1,20 +1,8 @@
 # Name of the include file
-INCLUDE_FILE = ../makefile_essential_lib.inc
-DOWNLOAD_FILE = https://raw.githubusercontent.com/OliPelz/makefile-libs/2bba343984b1fcbe95ddab814cd5ee6d4f947c84/makefile_essential_lib.inc
+TARGET_FILE = ./makefiles_inc/makefile_essential_lib.inc
+DOWNLOAD_URL = https://raw.githubusercontent.com/OliPelz/makefile-libs/2bba343984b1fcbe95ddab814cd5ee6d4f947c84/makefile_essential_lib.inc
 
-# Check if the include file exists
-ifeq ("$(wildcard $(INCLUDE_FILE))", "")
-    # If the file does not exist, run the target 'download'
-    $(info Include file does not exist. Running 'download' target...)
-    $(MAKE) _download
-else
-    # Include the file if it exists
-    include $(INCLUDE_FILE)
-endif
-
-_download:
-	curl -TODO $(DOWNLOAD_FILE) ./
-
+include ../makefile_essential_lib.inc
 ##########################################################################################
 ## building:
 

@@ -12,7 +12,7 @@ include makefile_essential_lib.inc
 to test its usage use
 
 ```bash
-$ cd tests
+$ cd examples
 $ make -f Makefile-test1
 $ make -f Makefile-test1 delete.it
 ```

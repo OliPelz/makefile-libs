@@ -1,8 +1,25 @@
+# template_version: v0.001
+
+# Makefile template using the essential colored help include
+#
+# instructions:
+
+# for the first time on any vanilla project, run "make" without any target, this will download the colored help include lib.
+# after that, you will have the colored help so running make for the second time will run it in "help" mode
+
 # Name of the include file
 TARGET_FILE = ./makefiles_inc/makefile_essential_lib.inc
 DOWNLOAD_URL = https://raw.githubusercontent.com/OliPelz/makefile-libs/2bba343984b1fcbe95ddab814cd5ee6d4f947c84/makefile_essential_lib.inc
 
-include ../makefile_essential_lib.inc
+.DEFAULT_GOAL  := run_for_first_time
+
+run_for_first_time: download_file
+	# after downloading lib file switch the .DEFAULT_GOAL
+	# so this will never be called
+	sed -i -E 's#\.DEFAULT_GOAL := help#\.DEFAULT_GOAL := help#g' Makefile
+	sed -i -E 's#__INCLUDE__#include $(TARGET_FILE)#g' Makefile
+
+__INCLUDE__
 ##########################################################################################
 ## building:
 

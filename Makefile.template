@@ -1,0 +1,54 @@
+#__START_MARKER__
+# template_version: v0.001
+
+# Makefile template using the essential colored help include
+#
+#
+# instructions:
+#
+# for the first time on any vanilla project, run "make" without any target, this will download the latest colored help include lib.
+# after that, you will have the colored help so running make for the second time will run it in "help" mode
+
+# Name of the include file
+TARGET_DIR = ./makefiles_inc
+TARGET_FILE = $(TARGET_DIR)/makefile_colored_help.inc
+MAKEFILE_LIB_GIT_URL = https://github.com/OliPelz/makefile-libs.git
+THIS_MAKEFILE_FILENAME := $(firstword $(MAKEFILE_LIST)) 
+
+# escpaced version
+ESC_TARGET_FILE = $(shell echo "$(TARGET_FILE)" | sed 's/\./\\./g' | sed '#/#\\/#g')
+# git clone or target temp will only be used for the first time and then removed
+git_clone_or_pull_temp:
+	@[ -d "$(TARGET_DIR)" ] && git -C "$(TARGET_DIR)" pull || git clone "$(MAKEFILE_LIB_GIT_URL)" "$(TARGET_DIR)"
+
+
+run_for_first_time_temp: git_clone_or_pull_temp
+	# after downloading lib file switch the .DEFAULT_GOAL, so this will never be called
+	sed -i -E 's#.DEFAULT_GOAL  := run_for_first_time_temp#\.DEFAULT_GOAL := help#g' $(THIS_MAKEFILE_FILENAME)
+	sed -i -E 's%#__INCLUDE__%include $(ESC_TARGET_FILE)%g' $(THIS_MAKEFILE_FILENAME)
+
+	# NOW remove instructions we only needed running for the first time
+	sed -i "/^#__START_MARKER__/,/^#__END_MARKER__/d" $(THIS_MAKEFILE_FILENAME)
+
+#__END_MARKER__
+.DEFAULT_GOAL  := run_for_first_time_temp
+#__INCLUDE__
+##########################################################################################
+## building:
+
+home: ## prints home dir
+	echo $(HOME)
+lorem: ## ipsum dolor sit
+	echo "this is lorem target"
+reset.yourmum: ### it is what it is
+	echo "how about that"
+
+##########################################################################################
+## deploying:
+
+ipsum: #### lorem sit
+	echo "whats up?"
+convert.it: ##### i am feeling lucky
+	echo "back to basics"
+delete.it: prompt_me ### test the prompt_me target
+	echo "now delete something"

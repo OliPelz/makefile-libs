@@ -7,7 +7,7 @@
 ##############################################################################
 
 
-THIS_FILENAME := $(firstword $(MAKEFILE_LIST)) 
+THIS_MAKEFILE_FILENAME := $(firstword $(MAKEFILE_LIST)) 
 ROOT_PATH       :=  $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 # default shell in makefile is sh, which is not sufficient for me
 SHELL          := /bin/bash

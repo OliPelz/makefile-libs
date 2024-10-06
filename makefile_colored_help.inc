@@ -8,6 +8,8 @@
 
 .PHONY:  help
 .DEFAULT_GOAL  := help
+THIS_MAKEFILE_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+
 FORCE:
 
 RED        = $(shell tput -Txterm setaf 1)
@@ -23,10 +25,13 @@ INFO       = $(GREEN)[INFO]$(RESET)
 reverse    = $(if $(1),$(call reverse,$(wordlist 2,$(words $(1)),$(1)))) $(firstword $(1))
 
 
+include $(THIS_MAKEFILE_DIR)/makefile_common.inc
+
 ###################################################################################
 ## Makefile management
-update_make_includes:   ## update all makefile include libs from external sources
-	$(MAKE) download_file
+
+update_make_includes:  ## update all makefile include libs from external sources
+	$(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefile_inc
 ###################################################################################
 ## help
 help: ##### show this help

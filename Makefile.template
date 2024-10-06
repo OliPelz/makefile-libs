@@ -26,7 +26,6 @@ run_for_first_time_temp: git_clone_or_pull_temp
 	# after downloading lib file switch the .DEFAULT_GOAL, so this will never be called
 	sed -i -E 's#.DEFAULT_GOAL  := run_for_first_time_temp#\.DEFAULT_GOAL := help#g' $(THIS_MAKEFILE_FILENAME)
 	sed -i -E 's%#__INCLUDE__%include $(ESC_TARGET_FILE)%g' $(THIS_MAKEFILE_FILENAME)
-
 	# NOW remove instructions we only needed running for the first time
 	sed -i "/^#__START_MARKER__/,/^#__END_MARKER__/d" $(THIS_MAKEFILE_FILENAME)
 

@@ -58,17 +58,24 @@ download_file:
 # clone or pull repo, depending if its already exists or not
 # GIT_REPO_URL := https://github.com/example/myrepo.git
 # BASE_DIR := /path/to/dir
+# TO_GITIGNORE (optional) if you want to put the cloned dir into parents .gitignore file
+
 # example: $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefiles_inc
+# to enable with gitignore:  $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefiles_inc TO_GITIGNORE=true
 clone-or-pull:
 	@org_repo_name=$$(basename "$(GIT_REPO_URL)" .git); \
 	repo_dir=$${BASE_DIR:-$$org_repo_name}; \
+	enable_gitignore=$${TO_GITIGNORE:-false}; \
 	if [ -d "$$repo_dir" ]; then \
 		echo "Repository '$$org_repo_name' already exists. Pulling latest changes..."; \
 		(cd "$$repo_dir" && git pull > /dev/null); \
 	else \
 		echo "Cloning repository '$$org_repo_name' into '$(BASE_DIR)'..."; \
 		git clone "$(GIT_REPO_URL)" "$$repo_dir"; \
-	fi
+	fi; \
+	if [ "$$enable_gitignore" == "true" ]; then \
+       [ -f .gitignore ] && grep -q '^$(BASE_DIR)$$' .gitignore || echo '$(BASE_DIR)' >> .gitignore; \
+	fi;
 
 
 # Sparse Checkout: This feature allows you to only check out a specific part of the repository

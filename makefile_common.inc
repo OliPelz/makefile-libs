@@ -36,6 +36,7 @@ prompt_me:
 # DOWNLOAD_URL := http://example.com/path/to/your_file.txt
 # TARGET_FILE := your_file.txt
 # Download file if it doesnt exist or is different
+# example: $(MAKE) download_file TARGET_FILE=/tmp/download.txt  DOWNLOAD_URL=https://xxx.com/download.txt
 download_file:
 	@mkdir -p $(dir $(TARGET_FILE)); \
 	if [ ! -f "$(TARGET_FILE)" ]; then \
@@ -57,6 +58,7 @@ download_file:
 # clone or pull repo, depending if its already exists or not
 # GIT_REPO_URL := https://github.com/example/myrepo.git
 # BASE_DIR := /path/to/dir
+# example: $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefiles_inc
 clone-or-pull:
 	@repo_name=$$(basename "$(GIT_REPO_URL)" .git); \
 	repo_dir="$(BASE_DIR)/$$repo_name"; \

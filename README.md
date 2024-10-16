@@ -3,14 +3,19 @@
 nice helper functions and cool extra feature libs for your Makefiles
 like adding colors, git helpers or crypting functions
 
-to use, include the Makefile lib in your custom Makefile like
+for fast use, copy the Makefile template to your target dir
+then run it for the first time without the target to initalize it 
+Note: init will only be done for the first time you run it!
 
-```Makefile
-include makefile_colored_help.inc
+```bash
+cp Makefile.template /your/target/Makefile
+cd $_
+make
 ```
+afterwards Makefile libs are set up!!!
 
-to test its usage use
 
+long
 ```bash
 $ mkdir /tmp/new-project
 $ cp Makefile.template /tmp/new-project/Makefile

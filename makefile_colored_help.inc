@@ -27,14 +27,8 @@ reverse    = $(if $(1),$(call reverse,$(wordlist 2,$(words $(1)),$(1)))) $(first
 
 include $(THIS_MAKEFILE_DIR)/makefile_common.inc
 
-###################################################################################
-## Makefile management
-update_make_includes:  ## update all makefile include libs from external sources
-	$(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefiles_inc
-
-
-###################################################################################
-## help
+##########################################################################################
+## help:
 help: ##### show this help
 	@echo ''
 	@echo 'Usage:'
@@ -48,3 +42,8 @@ help: ##### show this help
 		else if (/^[a-zA-Z0-9_\.-]+:.*?[^#]#####[^#].*$$/) {printf "      ${GREY}%-30s${WHITE}%s${RESET}\n", $$1, $$2} \
 		else if (/^## .*:.*$$/) {printf "  ${DARKGREEN}%s${RESET}\n", substr($$1,4)} \
 		}' $(call reverse, $(MAKEFILE_LIST))
+
+##########################################################################################
+## Makefile management:
+update_make_includes:  ## update all makefile include libs from external sources
+	$(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefiles_inc

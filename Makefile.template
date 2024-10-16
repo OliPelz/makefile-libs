@@ -34,6 +34,17 @@ run_for_first_time_temp: git_clone_or_pull_temp
 #__END_MARKER__
 #__INCLUDE__
 .DEFAULT_GOAL  := run_for_first_time_temp
+
+##########################################################################################
+## prerequisites:
+
+requirements: ## install all requirements
+	echo $(HOME)
+foo: ## ipsum dolor sit
+	echo "not a fool"
+bar: ### it is what it is
+	echo "not going down the bar today"
+
 ##########################################################################################
 ## building:
 

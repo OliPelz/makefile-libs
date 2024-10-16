@@ -38,7 +38,7 @@ run_for_first_time_temp: git_clone_or_pull_temp
 ##########################################################################################
 ## prerequisites:
 requirements: ## install all requirements
-	echo $(HOME)
+	echo "TODO: install all requirements"
 foo: ## ipsum dolor sit
 	echo "not a fool"
 bar: ### it is what it is

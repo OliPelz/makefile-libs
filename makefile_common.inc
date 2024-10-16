@@ -60,13 +60,13 @@ download_file:
 # BASE_DIR := /path/to/dir
 # example: $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefiles_inc
 clone-or-pull:
-	@repo_name=$$(basename "$(GIT_REPO_URL)" .git); \
-	repo_dir="$(BASE_DIR)/$$repo_name"; \
+	@org_repo_name=$$(basename "$(GIT_REPO_URL)" .git); \
+	repo_dir=$${BASE_DIR:-$$org_repo_name}; \
 	if [ -d "$$repo_dir" ]; then \
-		echo "Repository '$$repo_name' already exists. Pulling latest changes..."; \
-		cd "$$repo_dir" && git pull && cd - > /dev/null; \
+		echo "Repository '$$org_repo_name' already exists. Pulling latest changes..."; \
+		(cd "$$repo_dir" && git pull > /dev/null); \
 	else \
-		echo "Cloning repository '$$repo_name' into '$(BASE_DIR)'..."; \
+		echo "Cloning repository '$$org_repo_name' into '$(BASE_DIR)'..."; \
 		git clone "$(GIT_REPO_URL)" "$$repo_dir"; \
 	fi
 

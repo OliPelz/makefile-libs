@@ -36,11 +36,11 @@ run_for_first_time_temp: git_clone_or_pull_temp
 ##########################################################################################
 ## prerequisites:
 requirements: ## install all requirements
-	# mkdir -p ./external-deps
-	# (cd ./external-deps &&
-	#  $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell-functions.git TO_GITIGNORE=true
-	#  $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell-scripts.git TO_GITIGNORE=true
-	#  $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/yaacov/argparse-sh.git TO_GITIGNORE=true
+	# mkdir -p ./external-deps && \
+	# ( \
+	# $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell-functions.git BASE_DIR=./external-deps/public-shell-functions TO_GITIGNORE=true; \
+	# $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell-scripts.git BASE_DIR=./external-deps/public-shell-scripts TO_GITIGNORE=true; \
+	# $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/yaacov/argparse-sh.git BASE_DIR=./external-deps/argparse-sh TO_GITIGNORE=true; \
 	# )
 	echo "TODO: install all requirements"
 foo: ## ipsum dolor sit

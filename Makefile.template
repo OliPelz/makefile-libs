@@ -10,7 +10,8 @@
 # after that, you will have the colored help so running make for the second time will run it in "help" mode
 
 # Name of the include file
-TARGET_DIR = makefiles_inc # must be relative to THIS dir
+# TARGET_DIR => must be relative to THIS dir
+TARGET_DIR = makefiles_inc
 TARGET_FILE = ./$(TARGET_DIR)/makefile_colored_help.inc
 MAKEFILE_LIB_GIT_URL = https://github.com/OliPelz/makefile-libs.git
 THIS_MAKEFILE_FILENAME := $(firstword $(MAKEFILE_LIST)) 

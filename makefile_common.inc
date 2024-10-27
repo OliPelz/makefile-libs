@@ -57,7 +57,7 @@ download_file:
 
 # clone or pull repo, depending if its already exists or not
 # GIT_REPO_URL := https://github.com/example/myrepo.git
-# BASE_DIR := /path/to/dir
+# BASE_DIR := ./path/to/dir # must be relative to THIS dir
 # TO_GITIGNORE (optional) if you want to put the cloned dir into parents .gitignore file
 
 # example: $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefiles_inc

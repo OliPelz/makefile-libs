@@ -46,4 +46,4 @@ help: ##### show this help
 ##########################################################################################
 ## Makefile management:
 update_make_includes:  ## update all makefile include libs from external sources
-	$(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefiles_inc TO_GITIGNORE=true
+	$(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc TO_GITIGNORE=true

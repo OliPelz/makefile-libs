@@ -57,24 +57,28 @@ download_file:
 
 # clone or pull repo, depending if its already exists or not
 # GIT_REPO_URL := https://github.com/example/myrepo.git
-# BASE_DIR := ./path/to/dir # must be relative to THIS dir
+# TARGET_DIR := ./path/to/dir # must be relative to THIS dir
 # TO_GITIGNORE (optional) if you want to put the cloned dir into parents .gitignore file
 
-# example: $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefiles_inc
-# to enable with gitignore:  $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git BASE_DIR=makefiles_inc TO_GITIGNORE=true
+# example: $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc
+# to enable with gitignore:  $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc TO_GITIGNORE=true
+
+# remove trailing ./ from dir
+CLEANED_TARGET_DIR := $(patsubst ./%,%,$(TARGET_DIR))
+
 clone-or-pull:
 	@org_repo_name=$$(basename "$(GIT_REPO_URL)" .git); \
-	repo_dir=$${BASE_DIR:-$$org_repo_name}; \
+	repo_dir=$${TARGET_DIR:-$$org_repo_name}; \
 	enable_gitignore=$${TO_GITIGNORE:-false}; \
 	if [ -d "$$repo_dir" ]; then \
 		echo "Repository '$$org_repo_name' already exists. Pulling latest changes..."; \
 		(cd "$$repo_dir" && git pull > /dev/null); \
 	else \
-		echo "Cloning repository '$$org_repo_name' into '$(BASE_DIR)'..."; \
+		echo "Cloning repository '$$org_repo_name' into '$(TARGET_DIR)'..."; \
 		git clone "$(GIT_REPO_URL)" "$$repo_dir"; \
 	fi; \
 	if [ "$$enable_gitignore" == "true" ]; then \
-       [ -f .gitignore ] && grep -q '^$(BASE_DIR)$$' .gitignore || echo '$(BASE_DIR)' >> .gitignore; \
+       [ -f .gitignore ] && grep -q '^$(CLEANED_TARGET_DIR)$$' .gitignore || echo '$(CLEANED_TARGET_DIR)' >> .gitignore; \
 	fi;
 
 

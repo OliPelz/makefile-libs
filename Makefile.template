@@ -18,10 +18,14 @@ THIS_MAKEFILE_FILENAME := $(firstword $(MAKEFILE_LIST))
 
 # escpaced version
 ESC_TARGET_FILE = $(shell echo "$(TARGET_FILE)" | sed 's/\./\\./g' | sed '#/#\\/#g')
+
+# remove leading ./ from target dir
+CLEANED_TARGET_DIR := $(patsubst ./%,%,$(TARGET_DIR))
+
 # git clone or target temp will only be used for the first time and then removed
 git_clone_or_pull_temp:
 	@[ -d "./$(TARGET_DIR)" ] && git -C "$(TARGET_DIR)" pull || git clone "$(MAKEFILE_LIB_GIT_URL)" "$(TARGET_DIR)" ; \
-	[ -f .gitignore ] && grep -q '^$(TARGET_DIR)$$' .gitignore || echo '$(TARGET_DIR)' >> .gitignore;
+	[ -f .gitignore ] && grep -q '^$(CLEANED_TARGET_DIR)$$' .gitignore || echo '$(CLEANED_TARGET_DIR)' >> .gitignore;
 
 
 run_for_first_time_temp: git_clone_or_pull_temp

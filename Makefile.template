@@ -19,7 +19,7 @@ THIS_MAKEFILE_FILENAME := $(firstword $(MAKEFILE_LIST))
 ESC_TARGET_FILE = $(shell echo "$(TARGET_FILE)" | sed 's/\./\\./g' | sed '#/#\\/#g')
 # git clone or target temp will only be used for the first time and then removed
 git_clone_or_pull_temp:
-	@[ -d "./$(TARGET_DIR)" ] && git -C "$(TARGET_DIR)" pull || git clone "$(MAKEFILE_LIB_GIT_URL)" "$(TARGET_DIR)" \
+	@[ -d "./$(TARGET_DIR)" ] && git -C "$(TARGET_DIR)" pull || git clone "$(MAKEFILE_LIB_GIT_URL)" "$(TARGET_DIR)" ; \
 	[ -f .gitignore ] && grep -q '^$(TARGET_DIR)$$' .gitignore || echo '$(TARGET_DIR)' >> .gitignore;
 
 

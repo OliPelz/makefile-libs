@@ -112,3 +112,8 @@ update-all-submodules-changes:
 # If you want to completely remove the submodule checkouts but keep the submodule entries in .gitmodules:
 remove-all-submodules:
 	@git submodule deinit --all --force
+
+
+# add a dir called git_hooks to put our git hooks under version control
+add_git_hooks:
+	mkdir -p ./git_hooks && git config core.hooksPath git_hooks

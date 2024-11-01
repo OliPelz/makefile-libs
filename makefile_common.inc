@@ -13,7 +13,7 @@ THIS_MAKEFILE_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 # default shell in makefile is sh, which is not sufficient for me
 SHELL          := /bin/bash
 
-.PHONY: prompt_me download_file clone-or-pull sparse-checkout
+.PHONY: prompt_me download_file git-clone-or-pull git-sparse-checkout
 
 
 
@@ -60,8 +60,8 @@ download_file:
 # TARGET_DIR := ./path/to/dir # must be relative to THIS dir
 # TO_GITIGNORE (optional) if you want to put the cloned dir into parents .gitignore file
 
-# example: $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc
-# to enable with gitignore:  $(MAKE) clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc TO_GITIGNORE=true
+# example: $(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc
+# to enable with gitignore:  $(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc TO_GITIGNORE=true
 
 # remove trailing ./ from dir
 CLEANED_TARGET_DIR := $(patsubst ./%,%,$(TARGET_DIR))
@@ -91,7 +91,6 @@ git-clone-or-pull:
 #
 # example: make sparse-checkout SPARSE_DIR=path/to/your/dir REPO_URL=https://github.com/username/repo.git BRANCH=main
 #
-.PHONY: sparse-checkout
 git-sparse-checkout:
 	@echo "Cloning $(SPARSE_DIR) from $(REPO_URL) into $(TARGET_DIR)..."
 	git init $(TARGET_DIR)

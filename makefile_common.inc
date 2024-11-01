@@ -101,3 +101,14 @@ sparse-checkout:
 	cd $(TARGET_DIR) && git pull origin $(BRANCH)
 	@echo "Directory $(SPARSE_DIR) cloned successfully to $(TARGET_DIR)."
 
+
+# Ensure all submodules are initialized and up-to-date with their latest commits from the remote
+update-all-submodules-changes:
+	@git submodule sync --recursive;                             # Sync URLs in case they changed in .gitmodules
+	@git submodule update --init --recursive;                    # Initialize if not done, update all nested submodules
+	@git submodule foreach --recursive 'git fetch --all';        # Fetch changes in each submodule
+	@git submodule update --recursive --remote;                  # Pull the latest changes from each submodule's remote
+
+# If you want to completely remove the submodule checkouts but keep the submodule entries in .gitmodules:
+remove-all-submodules:
+	@git submodule deinit --all --force

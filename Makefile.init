@@ -24,16 +24,22 @@ CLEANED_TARGET_DIR := $(patsubst ./%,%,$(TARGET_DIR))
 
 # git clone or target temp will only be used for the first time and then removed
 git_clone_or_pull_temp:
-	@[ -d "./$(TARGET_DIR)" ] && git -C "$(TARGET_DIR)" pull || git clone "$(MAKEFILE_LIB_GIT_URL)" "$(TARGET_DIR)" ; \
+	@[ -d "./$(TARGET_DIR)" ] && git -C "$(TARGET_DIR)" pull || git clone "$(MAKEFILE_LIB_GIT_URL)" "$(TARGET_DIR)" || exit 1; \
 	[ -f .gitignore ] && grep -q '^$(CLEANED_TARGET_DIR)$$' .gitignore || echo '$(CLEANED_TARGET_DIR)' >> .gitignore;
 
 
+# after downloading lib file switch the .DEFAULT_GOAL, so this will never be called
+# NOW remove instructions we only needed running for the first time
 run_for_first_time_temp: git_clone_or_pull_temp
-	# after downloading lib file switch the .DEFAULT_GOAL, so this will never be called
-	sed -i -E 's#.DEFAULT_GOAL  := run_for_first_time_temp#\.DEFAULT_GOAL := help#g' $(THIS_MAKEFILE_FILENAME)
-	sed -i -E 's%#__INCLUDE__%include $(ESC_TARGET_FILE)%g' $(THIS_MAKEFILE_FILENAME)
-	# NOW remove instructions we only needed running for the first time
-	sed -i "/^#__START_MARKER__/,/^#__END_MARKER__/d" $(THIS_MAKEFILE_FILENAME)
+	@if ! [ -s "Makefile" ]; then \
+		echo "Makefile does not exist...creating new"; \
+		cp $(THIS_MAKEFILE_FILENAME) Makefile; \
+		sed -i -E 's#.DEFAULT_GOAL  := run_for_first_time_temp#\.DEFAULT_GOAL := help#g' Makefile; \
+		sed -i -E 's%#__INCLUDE__%include $(ESC_TARGET_FILE)%g' Makefile; \
+		sed -i "/^#__START_MARKER__/,/^#__END_MARKER__/d" Makefile; \
+	else \
+		echo "Makefile exists...bailing out"; \
+	fi
 
 #__END_MARKER__
 #__INCLUDE__

@@ -101,6 +101,11 @@ git-sparse-checkout:
 	cd $(TARGET_DIR) && git pull origin $(BRANCH)
 	@echo "Directory $(SPARSE_DIR) cloned successfully to $(TARGET_DIR)."
 
+# add a dir called git_hooks to put our git hooks under version control
+git-add-hooks:
+        mkdir -p ./git_hooks && git config core.hooksPath git_hooks
+
+
 ##############################################################################
 #
 #

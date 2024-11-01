@@ -103,7 +103,7 @@ git-sparse-checkout:
 
 # add a dir called git_hooks to put our git hooks under version control
 git-add-hooks:
-        mkdir -p ./git_hooks && git config core.hooksPath git_hooks
+	@mkdir -p ./git_hooks && git config core.hooksPath git_hooks
 
 
 ##############################################################################

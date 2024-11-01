@@ -45,9 +45,15 @@ run_for_first_time_temp: git_clone_or_pull_temp
 #__INCLUDE__
 .DEFAULT_GOAL  := run_for_first_time_temp
 
+# configure this git project, possible targets:
+# 
+# git-ignore-all-submodule-changes:   - configure git to ignore all submodule changes
+# git-add-hooks                       - configure to use git hooks in ./git_hooks
+configure-git-project: # git-ignore-all-submodule-changes git-add-hooks
+
 ##########################################################################################
 ## prerequisites:
-requirements: ## install all requirements
+requirements: configure-git-project ## install all requirements
 	# $(MAKE) add-git-hooks && \
 	# mkdir -p ./external-deps && \
 	# ( \

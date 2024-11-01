@@ -8,19 +8,20 @@ then run it for the first time without the target to initalize it
 Note: init will only be done for the first time you run it!
 
 ```bash
-cp Makefile.template /your/target/Makefile
+cp Makefile.init /your/target/dir/Makefile.init
 cd $_
-make
+make -f Makefile.init
 ```
-afterwards Makefile libs are set up!!!
+
+this will download latest makefile-lib and create a Makefile and set it up!!!
 
 
 long
 ```bash
 $ mkdir /tmp/new-project
-$ cp Makefile.template /tmp/new-project/Makefile
+$ cp Makefile.init /tmp/new-project/Makefile.init
 $ cd /tmp/new-project
-$ make # will prepare makefile for new project (download files)
-$ make # run again will present menu
+$ make -f Makefile.init # will prepare makefile for new project (download files)
+$ make # now a Makefile is set up
 $ make delete.it
 ```

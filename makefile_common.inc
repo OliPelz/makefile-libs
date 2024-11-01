@@ -55,7 +55,7 @@ download_file:
 		fi; \
 	fi
 
-# clone or pull repo, depending if its already exists or not
+# git clone or pull repo, depending if its already exists or not
 # GIT_REPO_URL := https://github.com/example/myrepo.git
 # TARGET_DIR := ./path/to/dir # must be relative to THIS dir
 # TO_GITIGNORE (optional) if you want to put the cloned dir into parents .gitignore file
@@ -66,7 +66,7 @@ download_file:
 # remove trailing ./ from dir
 CLEANED_TARGET_DIR := $(patsubst ./%,%,$(TARGET_DIR))
 
-clone-or-pull:
+git-clone-or-pull:
 	@org_repo_name=$$(basename "$(GIT_REPO_URL)" .git); \
 	repo_dir=$${TARGET_DIR:-$$org_repo_name}; \
 	enable_gitignore=$${TO_GITIGNORE:-false}; \
@@ -92,7 +92,7 @@ clone-or-pull:
 # example: make sparse-checkout SPARSE_DIR=path/to/your/dir REPO_URL=https://github.com/username/repo.git BRANCH=main
 #
 .PHONY: sparse-checkout
-sparse-checkout:
+git-sparse-checkout:
 	@echo "Cloning $(SPARSE_DIR) from $(REPO_URL) into $(TARGET_DIR)..."
 	git init $(TARGET_DIR)
 	cd $(TARGET_DIR) && git config core.sparseCheckout true
@@ -102,18 +102,37 @@ sparse-checkout:
 	@echo "Directory $(SPARSE_DIR) cloned successfully to $(TARGET_DIR)."
 
 
-# Ensure all submodules are initialized and up-to-date with their latest commits from the remote
-update-all-submodules-changes:
+# add a dir called git_hooks to put our git hooks under version control
+git-add-hooks:
+	mkdir -p ./git_hooks && git config core.hooksPath git_hooks
+
+##############################################################################
+#
+#
+# targets specific for git submodules
+#
+#
+##############################################################################
+
+
+# Ensure all git submodules are initialized and up-to-date with their latest commits from the remote
+git-update-all-submodules-changes:
 	@git submodule sync --recursive;                             # Sync URLs in case they changed in .gitmodules
 	@git submodule update --init --recursive;                    # Initialize if not done, update all nested submodules
 	@git submodule foreach --recursive 'git fetch --all';        # Fetch changes in each submodule
 	@git submodule update --recursive --remote;                  # Pull the latest changes from each submodule's remote
 
 # If you want to completely remove the submodule checkouts but keep the submodule entries in .gitmodules:
-remove-all-submodules:
+git-remove-all-submodules:
 	@git submodule deinit --all --force
 
+# ignore all changes to submodules in parent git
+git-ignore-all-submodule-changes:
+	@git submodule foreach 'git config submodule.$sm_path.ignore all'
 
-# add a dir called git_hooks to put our git hooks under version control
-add_git_hooks:
-	mkdir -p ./git_hooks && git config core.hooksPath git_hooks
+# check for changes in submodules and error out if something has been changed
+git-disable-submodule-changes: git-add-hooks
+	@[ -s ./git_hooks/pre-commit ] || echo '#!/usr/bin/env bash' > ./git_hooks/pre-commit; \
+         echo -e  "# Check for changes in submodules\ngit diff --submodule | \
+	 grep -q 'Submodule' && \
+	 echo '[Error] Submodule changes detected. Submodules are read-only.' && exit 1;" >> ./git_hooks/pre-commit

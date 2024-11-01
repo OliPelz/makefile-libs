@@ -132,7 +132,7 @@ git-ignore-all-submodule-changes:
 
 # check for changes in submodules and error out if something has been changed
 git-disable-submodule-changes: git-add-hooks
-	@[ -s ./git_hooks/pre-commit ] || echo '#!/usr/bin/env bash' > ./git_hooks/pre-commit; \
+	@[ -s ./git_hooks/pre-commit ] || echo -e '#!/usr/bin/env bash\n' > ./git_hooks/pre-commit; \
          echo -e  "# Check for changes in submodules\ngit diff --submodule | \
 	 grep -q 'Submodule' && \
 	 echo '[Error] Submodule changes detected. Submodules are read-only.' && exit 1;" >> ./git_hooks/pre-commit

@@ -27,10 +27,17 @@ git_clone_or_pull_temp:
 	@[ -d "./$(TARGET_DIR)" ] && git -C "$(TARGET_DIR)" pull || git clone "$(MAKEFILE_LIB_GIT_URL)" "$(TARGET_DIR)" || exit 1; \
 	[ -f .gitignore ] && grep -q '^$(CLEANED_TARGET_DIR)$$' .gitignore || echo '$(CLEANED_TARGET_DIR)' >> .gitignore;
 
+# all my Makefile projects have a make_scripts directory, where we put
+# in shell scripts which we call from our makefile whenever we need more
+# than a few lines of logic (like 10 lines), which we will put inline into the makefile
+# because inline shell scripts are horrible to escape and special characters
+create_make_script_dir:
+	@mkdir -p ./make_scripts; \
+	touch ./make_scripts/__PLACEHOLDER;
 
 # after downloading lib file switch the .DEFAULT_GOAL, so this will never be called
 # NOW remove instructions we only needed running for the first time
-run_for_first_time_temp: git_clone_or_pull_temp
+run_for_first_time_temp: create_make_script_dir git_clone_or_pull_temp
 	@if ! [ -s "Makefile" ]; then \
 		echo "Makefile does not exist...creating new"; \
 		cp $(THIS_MAKEFILE_FILENAME) Makefile; \

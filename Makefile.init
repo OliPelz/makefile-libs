@@ -99,18 +99,18 @@ delete.it: prompt_me ### test the prompt_me target
 ##########################################################################################
 ## xxx specific:
 install: ## install all xxx
-	@export DOTFILES_REPO_FULL_PATH=$$PWD; \
-	export XXX_FULL_PATH=$${DOTFILES_REPO_FULL_PATH}/basic-provisioning.yaml; \
+	@export THIS_REPO_FULL_PATH=$$PWD; \
+	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
 	for i in make_scripts/[0-9]*; do set -e && ./$$i; done
 
 clean-dotfiles-only: ## remove all installed xxx ONLY
-	@export DOTFILES_REPO_FULL_PATH=$$PWD; \
-	export XXX_FULL_PATH=$${DOTFILES_REPO_FULL_PATH}/basic-provisioning.yaml; \
+	@export THIS_REPO_FULL_PATH=$$PWD; \
+	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
 	./make_scripts/__remove_all_dotfiles.sh; \
 	
 clean: ## clean all xxx
-	@export DOTFILES_REPO_FULL_PATH=$$PWD; \
-	export XXX_FULL_PATH=$${DOTFILES_REPO_FULL_PATH}/basic-provisioning.yaml; \
+	@export THIS_REPO_FULL_PATH=$$PWD; \
+	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
 	./make_scripts/__remove_all_dotfiles.sh; \
 	rm -rf makefiles_inc external-deps; \
 	rm $$HOME/.env/__compiled_envs_for_shells/bash-complete-env.source.sh.zsh;

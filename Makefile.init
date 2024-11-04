@@ -50,6 +50,7 @@ run_for_first_time_temp: git_clone_or_pull_temp
 # git-ignore-all-submodule-changes:   - configure git to ignore all submodule changes
 # git-add-hooks                       - configure to use git hooks in ./git_hooks
 configure-git-project: # git-ignore-all-submodule-changes git-add-hooks
+	# @echo "TO IMPLEMENT"
 
 ##########################################################################################
 ## prerequisites:

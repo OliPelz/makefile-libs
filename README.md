@@ -25,8 +25,8 @@ $ make delete.it
 ```
 
 NOTE: you never need to run `__makefile_init_run_only_once.sh` again! 
-      infact files get renamed to __makefile_init_DO_NOT_RUN_AGAIN.sh
-      Whenever you need to update makefile include libraries run:
+
+Whenever you need to update makefile include libraries run:
 
 ```bash
 make update-make-includes 

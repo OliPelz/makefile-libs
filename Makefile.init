@@ -65,11 +65,11 @@ requirements: configure-git-project ## install all requirements
 	# $(MAKE) add-git-hooks && \
 	# mkdir -p ./external-deps && \
 	# ( \
-	# $(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell-functions.git TARGET_DIR=./external-deps/public-shell-functions TO_GITIGNORE=true && cd ./external-deps/public-shell-functions && ./first-time-run.sh; \
+	# $(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell-functions.git TARGET_DIR=./external-deps/public-shell-functions TO_GITIGNORE=true CLEAN=true && cd ./external-deps/public-shell-functions && ./first-time-run.sh; \
     # ); \
 	# ( \
-	# $(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell-scripts.git TARGET_DIR=./external-deps/public-shell-scripts TO_GITIGNORE=true; \
-	# $(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/yaacov/argparse-sh.git TARGET_DIR=./external-deps/argparse-sh TO_GITIGNORE=true; \
+	# $(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell-scripts.git TARGET_DIR=./external-deps/public-shell-scripts TO_GITIGNORE=true CLEAN=true; \
+	# $(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/yaacov/argparse-sh.git TARGET_DIR=./external-deps/argparse-sh TO_GITIGNORE=true CLEAN=true; \
 	# );
 	echo "TODO: install all requirements"
 foo: ## ipsum dolor sit
@@ -111,6 +111,6 @@ clean-dotfiles-only: ## remove all installed xxx ONLY
 clean: ## clean all xxx
 	@export THIS_REPO_FULL_PATH=$$PWD; \
 	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
-	./__make_scripts/__remove_all_dotfiles.sh; \
-	rm -rf makefiles_inc external-deps; \
-	rm $$HOME/.env/__compiled_envs_for_shells/bash-complete-env.source.sh.zsh;
+	./__make_scripts/__remove_all_XXXX.sh; \
+	rm -rf external-deps; \
+	rm $$HOME/.env/__compiled_envs_for_shells/shell-complete-env.*;

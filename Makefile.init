@@ -27,13 +27,13 @@ git_clone_or_pull_temp:
 	@[ -d "./$(TARGET_DIR)" ] && git -C "$(TARGET_DIR)" pull || git clone "$(MAKEFILE_LIB_GIT_URL)" "$(TARGET_DIR)" || exit 1; \
 	[ -f .gitignore ] && grep -q '^$(CLEANED_TARGET_DIR)$$' .gitignore || echo '$(CLEANED_TARGET_DIR)' >> .gitignore;
 
-# all my Makefile projects have a make_scripts directory, where we put
+# all my Makefile projects have a __make_scripts directory, where we put
 # in shell scripts which we call from our makefile whenever we need more
 # than a few lines of logic (like 10 lines), which we will put inline into the makefile
 # because inline shell scripts are horrible to escape and special characters
 create_make_script_dir:
-	@mkdir -p ./make_scripts; \
-	touch ./make_scripts/__PLACEHOLDER;
+	@mkdir -p ./__make_scripts; \
+	touch ./__make_scripts/__PLACEHOLDER;
 
 # after downloading lib file switch the .DEFAULT_GOAL, so this will never be called
 # NOW remove instructions we only needed running for the first time
@@ -101,16 +101,16 @@ delete.it: prompt_me ### test the prompt_me target
 install: ## install all xxx
 	@export THIS_REPO_FULL_PATH=$$PWD; \
 	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
-	for i in make_scripts/[0-9]*; do set -e && ./$$i; done
+	for i in __make_scripts/[0-9]*; do set -e && ./$$i; done
 
 clean-dotfiles-only: ## remove all installed xxx ONLY
 	@export THIS_REPO_FULL_PATH=$$PWD; \
 	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
-	./make_scripts/__remove_all_dotfiles.sh; \
+	./__make_scripts/__remove_all_dotfiles.sh; \
 	
 clean: ## clean all xxx
 	@export THIS_REPO_FULL_PATH=$$PWD; \
 	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
-	./make_scripts/__remove_all_dotfiles.sh; \
+	./__make_scripts/__remove_all_dotfiles.sh; \
 	rm -rf makefiles_inc external-deps; \
 	rm $$HOME/.env/__compiled_envs_for_shells/bash-complete-env.source.sh.zsh;

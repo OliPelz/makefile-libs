@@ -69,7 +69,7 @@ download_file:
 CLEANED_TARGET_DIR := $(patsubst ./%,%,$(TARGET_DIR))
 
 git-clone-or-pull:
-	org_repo_name=$$(basename "$(GIT_REPO_URL)" .git); \
+	@org_repo_name=$$(basename "$(GIT_REPO_URL)" .git); \
 	repo_dir=$${TARGET_DIR:-$$org_repo_name}; \
 	enable_gitignore=$${TO_GITIGNORE:-false}; \
 	clean_up=$${CLEAN:-false}; \

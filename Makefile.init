@@ -31,9 +31,11 @@ git_clone_or_pull_temp:
 # in shell scripts which we call from our makefile whenever we need more
 # than a few lines of logic (like 10 lines), which we will put inline into the makefile
 # because inline shell scripts are horrible to escape and special characters
+# all my makefile projects also have a __config_files dir, which contains
+# config files in yaml format we need to work with for a specific project
 create_make_script_dir:
-	@mkdir -p ./__make_scripts; \
-	touch ./__make_scripts/__PLACEHOLDER;
+	@mkdir -p ./__make_scripts ./__config_files; \
+	touch ./__make_scripts/__PLACEHOLDER ./__config_files/__PLACEHOLDER;
 
 # after downloading lib file switch the .DEFAULT_GOAL, so this will never be called
 # NOW remove instructions we only needed running for the first time

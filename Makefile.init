@@ -67,10 +67,9 @@ requirements: configure-git-project ## install all requirements
 	# $(MAKE) add-git-hooks && \
 	# mkdir -p ./external-deps && \
 	#( \
-	#$(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell-functions.git TARGET_DIR=./external-deps/public-shell-functions TO_GITIGNORE=true CLEAN=true && cd ./external-deps/public-shell-functions && ./__run_all.sh \
+	#$(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell.git TARGET_DIR=./external-deps/public-shell TO_GITIGNORE=true CLEAN=true && cd ./external-deps/public-shell && ./__makefile_init_run_only_once.sh; \
         #); \
 	#( \
-	#$(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/public-shell-scripts.git TARGET_DIR=./external-deps/public-shell-scripts TO_GITIGNORE=true CLEAN=true; \
 	#$(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/yaacov/argparse-sh.git TARGET_DIR=./external-deps/argparse-sh TO_GITIGNORE=true CLEAN=true; \
 	#);
 	echo "TODO: install all requirements"

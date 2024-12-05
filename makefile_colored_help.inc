@@ -6,7 +6,7 @@
 # 
 # maintained by: oliverpelz@gmail.com
 
-.PHONY:  help
+.PHONY:  help list-targets update-make-includes clean-make-includes
 .DEFAULT_GOAL  := help
 THIS_MAKEFILE_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -48,8 +48,11 @@ help: ##### show this help
 list-targets:  ## list ALL targets available globally (this and all dependant makefiles)
 	@echo "Available targets:"; \
 	make -pRrq -f $(MAKEFILE_LIST) : 2>/dev/null | \
-	awk -F: '/^[a-zA-Z0-9][^$#\/\t=]*:/ {print $$1}' | \
-	sort | uniq | grep -v '^$' | grep -v '^makefile$$'
+	awk -F: '/^[^# \t\/]+:/ {print $$1}' | \
+	sort | uniq | grep -v -e '^$$' -e '^makefile$$'
 
 update-make-includes:  ## update all makefile include libs from external sources
 	$(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc TO_GITIGNORE=true CLEAN=true
+
+clean-make-includes:   ## clean up makefile include libs and setup (not including Makefile)
+	@rm -rf __config_files __make_scripts makefiles_inc

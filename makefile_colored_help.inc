@@ -45,5 +45,11 @@ help: ##### show this help
 
 ##########################################################################################
 ## Makefile management:
+list-targets:
+	@echo "Available targets:"; \
+	make -pRrq -f $(MAKEFILE_LIST) : 2>/dev/null | \
+	awk -F: '/^[a-zA-Z0-9][^$#\/\t=]*:/ {print $$1}' | \
+	sort | uniq | grep -v '^$' | grep -v '^makefile$$'
+
 update-make-includes:  ## update all makefile include libs from external sources
 	$(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc TO_GITIGNORE=true CLEAN=true

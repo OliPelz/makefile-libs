@@ -60,6 +60,7 @@ download_file:
 # TARGET_DIR := ./path/to/dir # must be relative to THIS dir
 # TO_GITIGNORE (optional) if you want to put the cloned dir into parent's .gitignore file
 # CLEAN (optional) if set to "true", cleans up the directory before pulling
+# CHECKOUT_REF (optional) allows passing a branch or tag name to check out, if not set defaults to master/main branch
 
 # example: $(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc
 # to enable with gitignore: $(MAKE) git-clone-or-pull GIT_REPO_URL=https://github.com/OliPelz/makefile-libs.git TARGET_DIR=makefiles_inc TO_GITIGNORE=true
@@ -69,25 +70,34 @@ download_file:
 CLEANED_TARGET_DIR := $(patsubst ./%,%,$(TARGET_DIR))
 
 git-clone-or-pull:
-	@org_repo_name=$$(basename "$(GIT_REPO_URL)" .git); \
-	repo_dir=$${TARGET_DIR:-$$org_repo_name}; \
-	enable_gitignore=$${TO_GITIGNORE:-false}; \
-	clean_up=$${CLEAN:-false}; \
-	if [ -d "$$repo_dir" ]; then \
-		echo "Repository '$$org_repo_name' already exists."; \
-		if [ "$$clean_up" == "true" ]; then \
-		    echo "Cleaning up repository directory before pulling..."; \
-		    (cd "$$repo_dir" && git clean -fd && git reset --hard); \
-		fi; \
-		echo "Pulling latest changes..."; \
-		(cd "$$repo_dir" && git pull > /dev/null); \
-	else \
-		echo "Cloning repository '$$org_repo_name' into '$(TARGET_DIR)'..."; \
-		git clone "$(GIT_REPO_URL)" "$$repo_dir"; \
-	fi; \
-	if [ "$$enable_gitignore" == "true" ]; then \
-		[ -f .gitignore ] && grep -q '^$(CLEANED_TARGET_DIR)$$' .gitignore || echo '$(CLEANED_TARGET_DIR)' >> .gitignore; \
-	fi;
+        @org_repo_name=$$(basename "$(GIT_REPO_URL)" .git); \
+        repo_dir=$${TARGET_DIR:-$$org_repo_name}; \
+        enable_gitignore=$${TO_GITIGNORE:-false}; \
+        clean_up=$${CLEAN:-false}; \
+        checkout_ref=$${CHECKOUT_REF:-}; \
+        if [ -d "$$repo_dir" ]; then \
+                echo "Repository '$$org_repo_name' already exists."; \
+                if [ "$$clean_up" == "true" ]; then \
+                    echo "Cleaning up repository directory before pulling..."; \
+                    (cd "$$repo_dir" && git clean -fd && git reset --hard); \
+                fi; \
+                echo "Pulling latest changes..."; \
+                (cd "$$repo_dir" && git pull > /dev/null); \
+        else \
+                echo "Cloning repository '$$org_repo_name' into '$(TARGET_DIR)'..."; \
+                git clone "$(GIT_REPO_URL)" "$$repo_dir"; \
+        fi; \
+        if [ -n "$$checkout_ref" ]; then \
+                echo "Checking out reference '$$checkout_ref'..."; \
+                (cd "$$repo_dir" && git fetch --all && git checkout "$$checkout_ref"); \
+        else \
+                echo "No specific branch or tag provided. Checking out 'main' or 'master'..."; \
+                (cd "$$repo_dir" && git fetch --all && \
+                 (git rev-parse --verify main >/dev/null 2>&1 && git checkout main || git checkout master)); \
+        fi; \
+        if [ "$$enable_gitignore" == "true" ]; then \
+                [ -f .gitignore ] && grep -q '^$(CLEANED_TARGET_DIR)$$' .gitignore || echo '$(CLEANED_TARGET_DIR)' >> .gitignore; \
+        fi;
 
 
 # Sparse Checkout: This feature allows you to only check out a specific part of the repository

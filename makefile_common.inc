@@ -82,14 +82,30 @@ git-clone-or-pull:
 			(cd "$$repo_dir" && git clean -fd && git reset --hard); \
 		fi; \
 		echo "Pulling latest changes..."; \
-		(cd "$$repo_dir" && git pull > /dev/null); \
+		(cd "$$repo_dir" && git fetch --all --tags && git pull || true); \
 	else \
 		echo "Cloning repository '$$org_repo_name' into '$(TARGET_DIR)'..."; \
 		git clone "$(GIT_REPO_URL)" "$$repo_dir"; \
 	fi; \
 	if [ -n "$$checkout_ref" ]; then \
 		echo "Checking out reference '$$checkout_ref'..."; \
-		(cd "$$repo_dir" && git fetch --all && git checkout -b "$$checkout_ref" "$$checkout_ref"); \
+		(cd "$$repo_dir" && git fetch --all --tags; \
+		 if git rev-parse --verify "$$checkout_ref" >/dev/null 2>&1; then \
+			echo "Reference '$$checkout_ref' already exists locally. Checking out..."; \
+			git checkout "$$checkout_ref" || git switch "$$checkout_ref"; \
+		 else \
+			echo "Reference '$$checkout_ref' not found locally. Attempting to check out..."; \
+			if git show-ref --tags | grep -q "refs/tags/$$checkout_ref"; then \
+				echo "Reference '$$checkout_ref' is a tag. Checking out as detached HEAD..."; \
+				git checkout -b "$$checkout_ref-branch" "$$checkout_ref"; \
+			elif git show-ref --heads | grep -q "refs/heads/$$checkout_ref"; then \
+				echo "Reference '$$checkout_ref' is a branch. Switching to it..."; \
+				git switch "$$checkout_ref"; \
+			else \
+				echo "Error: Reference '$$checkout_ref' not found."; \
+				exit 1; \
+			fi; \
+		 fi); \
 	else \
 		echo "No specific branch or tag provided. Checking out 'main' or 'master'..."; \
 		(cd "$$repo_dir" && git fetch --all && \

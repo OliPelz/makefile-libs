@@ -107,7 +107,7 @@ delete.it: prompt_me ### test the prompt_me target
 install: ## install all xxx
 	@export THIS_REPO_FULL_PATH=$$PWD; \
 	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
-	for i in __make_scripts/[0-9]*; do set -e && ./$$i; done
+	for i in __make_scripts/[0-9]*.sh; do set -e && ./$$i; done
 
 clean-xxx-only: ## remove all installed xxx ONLY
 	@export THIS_REPO_FULL_PATH=$$PWD; \

@@ -89,7 +89,7 @@ git-clone-or-pull:
 	fi; \
 	if [ -n "$$checkout_ref" ]; then \
 		echo "Checking out reference '$$checkout_ref'..."; \
-		(cd "$$repo_dir" && git fetch --all && git checkout "$$checkout_ref"); \
+		(cd "$$repo_dir" && git fetch --all && git checkout -b "$$checkout_ref" "$$checkout_ref"); \
 	else \
 		echo "No specific branch or tag provided. Checking out 'main' or 'master'..."; \
 		(cd "$$repo_dir" && git fetch --all && \

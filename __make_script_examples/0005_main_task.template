@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#set -x
+# INFO: all checks and tests must go to 0000_starthere_gatekeeper.sh, nothing will be checked in the scripts
+
+# first source our external functions
+source ${DOTFILES_REPO_FULL_PATH}/external-deps/public-shell-functions/build/__full-source.bash
+
+log_info2 ">>> PROCESSING 0005_main_task.sh"
+
+# mandantory
+environment_name=$(parse_yaml ".name" "$PROVISIONING_CONFIG_FULL_PATH")
+
+# optional
+
+# Parse the YAML file to extract the system_packages for the current environment
+xxxx=$(parse_yaml ".xxxx" "$PROVISIONING_CONFIG_FULL_PATH" 2>/dev/null)
+
+# Parse the YAML file to extract the other_checks_shell for the current environment
+yyy=$(parse_yaml ".yyyyy" "$PROVISIONING_CONFIG_FULL_PATH" 2>/dev/null)
+
+
+failed=false
+
+# MAIN LOGIC FOLLOWS HERE

@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+# INFO: all checks and tests must go to 0000_starthere_gatekeeper.sh, nothing will be checked in the scripts
+
+# first source our external functions
+source ${DOTFILES_REPO_FULL_PATH}/external-deps/public-shell-functions/build/__full-source.bash
+
+log_info2 ">>> PROCESSING 0001_check_requirements.sh"
+
+
+# mandantory
+environment_name=$(parse_yaml ".name" "$PROVISIONING_CONFIG_FULL_PATH")
+
+# optional
+
+# Parse the YAML file to extract the system_packages for the current environment
+system_packages=$(parse_yaml ".system_packages[]" "$PROVISIONING_CONFIG_FULL_PATH" 2>/dev/null)
+
+# Parse the YAML file to extract the other_checks_shell for the current environment
+other_checks_shell=$(parse_yaml ".other_checks_shell[]" "$PROVISIONING_CONFIG_FULL_PATH" 2>/dev/null)
+
+
+failed=false
+
+# Check if the required system packages are installed
+if test_env_variable_defined "system_packages"; then
+    log_info "Checking if system packages are installed for environment: $environment_name"
+    while IFS= read -r package; do
+        log_info "Checking if cmd is available '$package': "
+        if check_command_installed "$package"; then
+            log_info "...Installed"
+        else
+            log_error "...Not installed"
+			failed=true
+        fi
+    done <<< "$system_packages"
+else
+    log_info "No system packages to check for environment: $environment_name"
+fi
+
+# Perform other checks using shell commands
+if test_env_variable_defined "other_checks_shell"; then
+    log_info "Running additional checks for environment: $environment_name"
+    while IFS= read -r check_command; do
+        log_info "Executing: ${check_command}"
+        if eval "${check_command}"; then
+			log_info "...Succeeded"
+		else
+			log_error "...Failed"
+			failed=true
+		fi
+    done <<< "${other_checks_shell}"
+else
+    log_info "No additional checks to perform for environment: $environment_name"
+fi
+
+if [ "${failed}" == "true" ]; then
+	exit 1
+else
+	exit 0
+fi

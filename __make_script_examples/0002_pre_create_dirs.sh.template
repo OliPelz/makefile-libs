@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# INFO: all checks and tests must go to 0000_starthere_gatekeeper.sh, nothing will be checked in the scripts
+
+# first source our external functions
+source ${DOTFILES_REPO_FULL_PATH}/external-deps/public-shell-functions/build/__full-source.bash
+
+log_info2 ">>> PROCESSING 0002_pre_create_dirs.sh"
+
+# mandantory
+environment_name=$(parse_yaml ".name" "$PROVISIONING_CONFIG_FULL_PATH")
+
+create_dirs=$(parse_yaml ".pre_create_dirs[]" "$PROVISIONING_CONFIG_FULL_PATH" 2>/dev/null)
+
+failed=false
+
+if test_env_variable_defined "create_dirs"; then
+    log_info "Pre-step creating dirs for ${environment_name}"
+    while IFS= read -r create_dir; do
+        log_info "Executing: mkdir ${create_dir}"
+        if eval "mkdir -p ${create_dir}"; then
+	    log_info "...Succeeded"
+        else
+	    log_error "...Failed"
+	    failed=true
+       fi
+    done <<< "${create_dirs}"
+else
+    log_info "No dirs to create found for environment: $environment_name"
+fi
+
+if [ "${failed}" == "true" ]; then
+	exit 1
+else
+	exit 0
+fi

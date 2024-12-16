@@ -1,0 +1,13 @@
+name: basic-environment
+
+system:
+  system_packages:
+     - stow
+     - tmux
+     - preprocess # pipx install preprocess, check if ~/.local/bin in PATH
+     - shtab # pipx install shtab, check ~/.local/bin in PATH
+
+lorem:
+  ipsum:
+    dolor:
+      sit:

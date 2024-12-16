@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# INFO: all checks and tests must go to 0000_starthere_gatekeeper.sh, nothing will be checked in the scripts
+
+# first source our external functions
+source ${DOTFILES_REPO_FULL_PATH}/external-deps/public-shell-functions/build/__full-source.bash
+
+log_info2 ">>> PROCESSING 0003_download_external_dependencies.sh"
+
+# mandantory
+environment_name=$(parse_yaml ".name" "$PROVISIONING_CONFIG_FULL_PATH")
+
+# optional
+
+# Parse the YAML file to extract important values for the current environment
+#  extracts the name, url and path from each element in the external_dependency_repos array and outputs them as separate lines.
+external_dependency_repos=$(parse_yaml  '.external_dependency_repos[] | .name + "|" + .url + "|" + .path ' "$PROVISIONING_CONFIG_FULL_PATH" 2>/dev/null)
+
+
+failed=false
+
+# Check if the required system packages are installed
+if test_env_variable_defined "external_dependency_repos"; then
+    log_info "installing external dependency git repos into our dotfiles env: $environment_name"
+    
+    while IFS='|' read -r name url path; do
+        # Check if the directory already exists
+	    log_info "cloning ${name} from repo ${repo} to ${path}"
+            git_clone_or_pull --repo_url "$url" --target_dir "$path" --clean && echo "Cloned $url to $path" || failed=true
+    done <<< "${external_dependency_repos}"
+else
+    log_info "Could not find any external git repos to install: $environment_name"
+fi
+
+if [ "${failed}" == "true" ]; then
+	exit 1
+else
+	exit 0
+fi

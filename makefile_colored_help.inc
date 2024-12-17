@@ -26,6 +26,7 @@ reverse    = $(if $(1),$(call reverse,$(wordlist 2,$(words $(1)),$(1)))) $(first
 
 
 include $(THIS_MAKEFILE_DIR)/makefile_common.inc
+include $(THIS_MAKEFILE_DIR)/makefile_python.inc
 
 ##########################################################################################
 ## help:

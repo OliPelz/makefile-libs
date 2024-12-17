@@ -36,8 +36,8 @@ git_clone_or_pull_temp:
 create_important_make_dirs:
 	@cp -r $(TARGET_DIR)/__make_script_examples/ ./__make_scripts/ && \
 	cp -r $(TARGET_DIR)/__config_file_examples/ ./__config_files/ && \
-	mkdir -p $(TARGET_DIR)/__templates/ && \
-	touch $(TARGET_DIR)/__templates/__PLACEHOLDER
+	mkdir -p ./__templates/ && \
+	touch ./__templates/__PLACEHOLDER
 
 # after downloading lib file switch the .DEFAULT_GOAL, so this will never be called
 # NOW remove instructions we only needed running for the first time

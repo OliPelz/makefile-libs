@@ -163,29 +163,3 @@ git-remove-all-submodules:
 git-ignore-all-submodule-changes:
 	@git submodule foreach 'git config submodule.$sm_path.ignore all'
 
-
-##############################################################################
-#
-#
-# targets specific for python
-#
-#
-##############################################################################
-
-# create a new empty poetry project in the current dir and activate it
-# Note: we use pip to locally install the poetry cli in the dir
-#       Then to activate poetry in other targets just use "poetry shell && ...."
-create-new-poetry-project:
-	python3 -m venv .venv && \
-        source .venv/bin/activate && \
-        pip install --upgrade pip && \
-        pip install poetry && \
-        poetry init && \
-        poetry config virtualenvs.in-project true && \
-        poetry install --no-root && \
-        echo ".venv" >> .gitignore && \
-        poetry shell
-
-clean-new-poetry-project:
-	rm -rf .venv poetry.lock pyproject.toml
-

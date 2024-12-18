@@ -20,23 +20,23 @@ SHELL          := /bin/bash
 
 .PHONY: create-new-poetry-project init-existing-poetry-project
 
-# Create a new Poetry project if it doesnt already exist
+# Create a new Poetry project if it doesn't already exist
 create-new-poetry-project:
 	@if [ -f "pyproject.toml" ]; then \
 		echo "Poetry project already exists. Skipping initialization."; \
 	else \
 		echo "Initializing new Poetry project..."; \
-		python3 -m venv .venv && \
-		source .venv/bin/activate && \
+		python3 -m venv venv-poetry && \
+		source venv-poetry/bin/activate && \
 		pip install --upgrade pip && \
 		pip install poetry && \
-		poetry init --no-interaction && \
-		poetry config virtualenvs.in-project true && \
-		poetry install --no-root && \
+		venv-poetry/bin/poetry init --no-interaction && \
+		venv-poetry/bin/poetry config virtualenvs.in-project true && \
+		venv-poetry/bin/poetry install --no-root && \
 		echo ".venv" >> .gitignore && \
 		echo "Poetry project initialized successfully."; \
 	fi
-	@echo "To activate the virtual environment, run: 'poetry shell'"
+	@echo "To activate the Poetry environment, run: 'source venv-poetry/bin/activate && poetry shell'"
 
 # Initialize Poetry for an existing project with pyproject.toml but missing venv and Poetry CLI
 init-poetry-for-project:
@@ -45,18 +45,18 @@ init-poetry-for-project:
 		exit 1; \
 	else \
 		echo "Initializing Poetry environment for existing project..."; \
-		python3 -m venv .venv && \
-		source .venv/bin/activate && \
+		python3 -m venv venv-poetry && \
+		source venv-poetry/bin/activate && \
 		pip install --upgrade pip && \
 		pip install poetry && \
-		poetry config virtualenvs.in-project true && \
-		poetry install --no-root && \
+		venv-poetry/bin/poetry config virtualenvs.in-project true && \
+		venv-poetry/bin/poetry install --no-root && \
 		echo ".venv" >> .gitignore && \
 		echo "Poetry environment initialized successfully."; \
 	fi
-	@echo "To activate the virtual environment, run: 'poetry shell'"
+	@echo "To activate the Poetry environment, run: 'source venv-poetry/bin/activate && poetry shell'"
 
+# Clean the project virtual environment
 clean-poetry-venv:
 	rm -rf .venv
-
-
+	rm -rf venv-poetry

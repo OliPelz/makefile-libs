@@ -34,6 +34,7 @@ create-new-poetry-project:
 		venv-poetry/bin/poetry config virtualenvs.in-project true && \
 		venv-poetry/bin/poetry install --no-root && \
 		echo ".venv" >> .gitignore && \
+		echo "venv-poetry" >> .gitignore && \
 		echo "Poetry project initialized successfully."; \
 	fi
 	@echo "To activate the Poetry environment, run: 'source venv-poetry/bin/activate && poetry shell'"
@@ -52,6 +53,7 @@ init-poetry-for-project:
 		venv-poetry/bin/poetry config virtualenvs.in-project true && \
 		venv-poetry/bin/poetry install --no-root && \
 		echo ".venv" >> .gitignore && \
+		echo "venv-poetry" >> .gitignore && \
 		echo "Poetry environment initialized successfully."; \
 	fi
 	@echo "To activate the Poetry environment, run: 'source venv-poetry/bin/activate && poetry shell'"

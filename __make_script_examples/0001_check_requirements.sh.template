@@ -5,7 +5,7 @@
 # INFO: HERE WE CHECK FOR APPLICATION SPECIFIC DEPENDENCIES, NOT MAKEFILE SPECIFIC!
 
 # first source our external functions
-source ${THIS_FULL_PATH}/external-deps/utility-scripts/build/__full-source.bash
+source ${THIS_REPO_FULL_PATH}/external-deps/utility-scripts/build/__full-source.bash
 
 log_info2 ">>> PROCESSING 0001_check_requirements.sh"
 

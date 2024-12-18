@@ -68,7 +68,7 @@ configure-git-project: # git-ignore-all-submodule-changes git-add-hooks
 
 ##########################################################################################
 ## prerequisites:
-requirements: configure-git-project ## install all requirements
+requirements: configure-git-project ## install all requirements, ONLY! makefile specific
 	# $(MAKE) add-git-hooks && \
 	# mkdir -p ./external-deps && \
 	#( \

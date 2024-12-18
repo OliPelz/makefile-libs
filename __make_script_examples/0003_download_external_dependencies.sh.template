@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # INFO: all checks and tests must go to 0000_starthere_gatekeeper.sh, nothing will be checked in the scripts
+# DOWNLOAD AND INSTALL ALL STUFF NEEDED TO RUN OR BUILD THE APPLICATION, NOT MAKEFILE SPECIFIC HERE
 
 # first source our external functions
 source ${THIS_FULL_PATH}/external-deps/utility-scripts/build/__full-source.bash

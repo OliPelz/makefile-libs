@@ -39,7 +39,7 @@ create-new-poetry-project:
 	@echo "To activate the virtual environment, run: 'poetry shell'"
 
 # Initialize Poetry for an existing project with pyproject.toml but missing venv and Poetry CLI
-init-existing-poetry-project:
+init-poetry-for-project:
 	@if [ ! -f "pyproject.toml" ]; then \
 		echo "Error: pyproject.toml not found. Please run create-new-poetry-project first."; \
 		exit 1; \

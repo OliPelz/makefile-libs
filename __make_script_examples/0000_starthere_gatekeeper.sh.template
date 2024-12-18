@@ -33,7 +33,7 @@ if ! temp_test_env_variable_defined THIS_FULL_PATH; then
 	exit 1
 fi
 # now source our external functions
-source ${THIS_FULL_PATH}/external-deps/public-shell-functions/build/__full-source.bash
+source ${THIS_FULL_PATH}/external-deps/utility-scripts/build/__full-source.bash
 
 log_info2 ">>> PROCESSING 0000_starthere_gatekeeper.sh"
 

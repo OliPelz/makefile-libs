@@ -74,9 +74,9 @@ requirements: configure-git-project ## install all requirements
 	#( \
 	#$(MAKE) git-clone-or-pull \
 	#    GIT_REPO_URL=https://github.com/OliPelz/utility-scripts.git \  # most of my projects need this collection of scripts
-	#	 TARGET_DIR=./external-deps/public-shell \
+	#	 TARGET_DIR=./external-deps/utility-scripts \
 	#	 TO_GITIGNORE=true CLEAN=true \
-	#	 && cd ./external-deps/public-shell \
+	#	 && cd ./external-deps/utility-scripts \
 	#	 && ./__makefile_init_run_only_once.sh; \
     #); \
 	#( \

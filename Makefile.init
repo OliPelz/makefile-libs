@@ -24,7 +24,8 @@ CLEANED_TARGET_DIR := $(patsubst ./%,%,$(TARGET_DIR))
 
 # git clone or target temp will only be used for the first time and then removed
 git_clone_or_pull_temp:
-	@[ -d "./$(TARGET_DIR)" ] && git -C "$(TARGET_DIR)" pull || git clone "$(MAKEFILE_LIB_GIT_URL)" "$(TARGET_DIR)" || exit 1; \
+	@set -e && \
+	[ -d "./$(TARGET_DIR)" ] && git -C "$(TARGET_DIR)" pull || git clone "$(MAKEFILE_LIB_GIT_URL)" "$(TARGET_DIR)" || exit 1; \
 	[ -f .gitignore ] && grep -q '^$(CLEANED_TARGET_DIR)$$' .gitignore || echo '$(CLEANED_TARGET_DIR)' >> .gitignore;
 
 # all my Makefile projects have a __make_scripts directory, where we put
@@ -34,7 +35,8 @@ git_clone_or_pull_temp:
 # all my makefile projects also have a __config_files dir, which contains
 # config files in yaml format we need to work with for a specific project
 create_important_make_dirs:
-	@cp -r $(TARGET_DIR)/__make_script_examples/ ./__make_scripts/ && \
+	@set -e && \
+	cp -r $(TARGET_DIR)/__make_script_examples/ ./__make_scripts/ && \
 	cp -r $(TARGET_DIR)/__config_file_examples/ ./__config_files/ && \
 	mkdir -p ./__templates/ && \
 	touch ./__templates/__PLACEHOLDER
@@ -42,7 +44,8 @@ create_important_make_dirs:
 # after downloading lib file switch the .DEFAULT_GOAL, so this will never be called
 # NOW remove instructions we only needed running for the first time
 run_for_first_time_temp: git_clone_or_pull_temp create_important_make_dirs
-	@if ! [ -s "Makefile" ]; then \
+	@set -e && \
+	if ! [ -s "Makefile" ]; then \
 		echo "Makefile does not exist...creating new"; \
 		cp $(THIS_MAKEFILE_FILENAME) Makefile; \
 		sed -i -E 's#.DEFAULT_GOAL  := run_for_first_time_temp#\.DEFAULT_GOAL := help#g' Makefile; \
@@ -61,14 +64,13 @@ run_for_first_time_temp: git_clone_or_pull_temp create_important_make_dirs
 # git-ignore-all-submodule-changes:   - configure git to ignore all submodule changes
 # git-add-hooks                       - configure to use git hooks in ./git_hooks
 configure-git-project: # git-ignore-all-submodule-changes git-add-hooks
+	#@set -e && \
 	# @echo "TO IMPLEMENT"
-
-
-
 
 ##########################################################################################
 ## prerequisites:
 requirements: configure-git-project ## install all requirements, ONLY! makefile specific
+	#@set -e && \
 	# $(MAKE) add-git-hooks && \
 	# mkdir -p ./external-deps && \
 	#( \
@@ -116,17 +118,20 @@ delete.it: prompt_me ### test the prompt_me target
 ##########################################################################################
 ## xxx specific:
 install: ## install all xxx
-	@export THIS_REPO_FULL_PATH=$$PWD; \
+	@set -e && \
+	export THIS_REPO_FULL_PATH=$$PWD; \
 	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
 	for i in __make_scripts/[0-9]*.sh; do set -e && ./$$i; done
 
 clean-xxx-only: ## remove all installed xxx ONLY
-	@export THIS_REPO_FULL_PATH=$$PWD; \
+	@set -e && \
+	export THIS_REPO_FULL_PATH=$$PWD; \
 	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
 	./__make_scripts/__remove_all_xxx.sh; \
 	
 clean: ## clean all xxx
-	@export THIS_REPO_FULL_PATH=$$PWD; \
+	@set -e && \
+	export THIS_REPO_FULL_PATH=$$PWD; \
 	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
 	./__make_scripts/__remove_all_XXXX.sh; \
 	rm -rf external-deps; \

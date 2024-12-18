@@ -56,7 +56,7 @@ init-poetry-for-project:
 	fi
 	@echo "To activate the virtual environment, run: 'poetry shell'"
 
-clean-new-poetry-project:
-	rm -rf .venv poetry.lock pyproject.toml
+clean-poetry-venv:
+	rm -rf .venv
 
 

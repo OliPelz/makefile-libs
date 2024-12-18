@@ -28,6 +28,15 @@ SHELL          := /bin/bash
 prompt_me:
 	@echo -n "Are you sure? [y/N] " && read ans && [ $${ans:-N} = y ]
 
+# General target to check if a variable is defined
+# use like:
+# $(MAKE) check-variable VAR=DJANGO_NEW_PROJECT_NAME
+check-variable:
+	@if [ -z "$($(VAR))" ]; then \
+		echo "Error: Variable '$(VAR)' is not set."; \
+		exit 1; \
+	fi
+
 # Download file if it doesnt exist or is different
 #
 #

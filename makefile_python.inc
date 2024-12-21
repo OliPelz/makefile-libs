@@ -67,3 +67,10 @@ init-poetry-for-project: check-poetry-installed
 		echo "Poetry environment initialized successfully."; \
 	fi
 
+poetry-info:
+	$(info PATH=$(PATH))
+	$(info Which Python: $(shell which python))
+	$(info Poetry Path: $(shell which poetry))
+        $(info poetry run python: $(shell poetry run python --version))
+        $(info poetry env info: $(poetry env info))
+        $(info poetry config: $(poetry config --list))

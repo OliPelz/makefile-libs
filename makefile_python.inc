@@ -34,7 +34,7 @@ check-pipx-setup:
 
 # Check if Poetry is installed via pipx
 check-poetry-installed: check-pipx-setup
-	@if ! pipx list | grep -q 'poetry'; then \
+	@if ! pipx list  2>/dev/null | grep -q 'poetry'; then \
 		echo "Error: Poetry is not installed via pipx. Installing Poetry..."; \
 		pipx install poetry; \
 	else \

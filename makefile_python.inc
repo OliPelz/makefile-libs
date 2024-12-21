@@ -74,3 +74,11 @@ poetry-info:
         $(info poetry run python: $(shell poetry run python --version))
         $(info poetry env info: $(poetry env info))
         $(info poetry config: $(poetry config --list))
+
+poetry-info-2:
+	@echo "PATH=$(PATH)"
+	@echo "Which Python: $(shell which python)"
+	@echo "Poetry Path: $(shell which poetry)"
+	@echo "poetry run python version: $$(poetry run python --version)"
+	@echo "poetry env info: $$(poetry env info)"
+	@echo "poetry config: $$(poetry config --list)"

@@ -98,18 +98,18 @@ git-clone-or-pull:
 	fi; \
 	if [ -n "$$checkout_ref" ]; then \
 		echo "Checking out reference '$$checkout_ref'..."; \
-		(cd "$$repo_dir" && git fetch --all --tags; \
-		 if git rev-parse --verify "$$checkout_ref" >/dev/null 2>&1; then \
-			echo "Reference '$$checkout_ref' already exists locally. Checking out..."; \
-			git checkout "$$checkout_ref" || git switch "$$checkout_ref"; \
+		(cd "$$repo_dir" && git fetch --all --tags && \
+		 if git show-ref --heads | grep -q "refs/heads/$$checkout_ref"; then \
+			echo "Switching to branch '$$checkout_ref'..."; \
+			git switch "$$checkout_ref"; \
+		 elif git show-ref --tags | grep -q "refs/tags/$$checkout_ref"; then \
+			echo "Checking out tag '$$checkout_ref' as detached HEAD..."; \
+			git checkout "$$checkout_ref"; \
 		 else \
-			echo "Reference '$$checkout_ref' not found locally. Attempting to check out..."; \
-			if git show-ref --tags | grep -q "refs/tags/$$checkout_ref"; then \
-				echo "Reference '$$checkout_ref' is a tag. Checking out as detached HEAD..."; \
-				git checkout -b "$$checkout_ref-branch" "$$checkout_ref"; \
-			elif git show-ref --heads | grep -q "refs/heads/$$checkout_ref"; then \
-				echo "Reference '$$checkout_ref' is a branch. Switching to it..."; \
-				git switch "$$checkout_ref"; \
+			echo "Branch or tag '$$checkout_ref' not found locally. Fetching remote branch..."; \
+			if git ls-remote --heads origin "$$checkout_ref" | grep -q "$$checkout_ref"; then \
+				echo "Found remote branch '$$checkout_ref'. Creating local branch..."; \
+				git checkout -b "$$checkout_ref" origin/$$checkout_ref; \
 			else \
 				echo "Error: Reference '$$checkout_ref' not found."; \
 				exit 1; \

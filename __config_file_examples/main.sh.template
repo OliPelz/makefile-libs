@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# Variables from YAML
+ENVIRONMENT_NAME="basic-environment"
+
+HI=("a" "b" "c")
+
+SYSTEM_PACKAGES=(
+  "stow"
+  "tmux"
+  "preprocess" # pipx install preprocess, check if ~/.local/bin in PATH
+  "shtab"      # pipx install shtab, check ~/.local/bin in PATH
+)
+
+LOREM_IPSUM_DOLOR_SIT=""
+
+OTHER_SHELL_CHECKS=(
+  "df -h | grep bla"
+  "hostname -a | grep aaa"
+)
+
+declare -a EXTERNAL_DEPENDENCY_REPOS=(
+    "name:AlphaTool,repo:https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.0.tar.gz,path:/opt/tools/AlphaTool"
+    "name:BetaUtility,repo:https://mirror.kernel.org/ubuntu/pool/main/b/betautility_1.0.tar.gz,path:/opt/tools/BetaUtility"
+    "name:GammaDriver,repo:https://ftp.gnu.org/gnu/gammadriver/gammadriver-1.0.tar.gz,path:/opt/drivers/GammaDriver"
+    "name:DeltaService,repo:https://mirrors.edge.kernel.org/fedora/releases/34/Everything/x86_64/os/Packages/d/deltaservice-1.0.tar.gz,path:/opt/services/DeltaService"
+    "name:EpsilonApp,repo:https://ftp.kernel.org/pub/software/applications/epsilon/epsilon-2.0.tar.gz,path:/opt/apps/EpsilonApp"
+)
+
+
+# working with data structures
+
+#echo "HI Array:"
+#for ITEM in "${HI[@]}"; do
+#  echo "- $ITEM"
+#done
+
+#echo "System Packages:"
+#for PACKAGE in "${SYSTEM_PACKAGES[@]}"; do
+#  echo "- $PACKAGE"
+#done
+
+#echo "Lorem Ipsum Dolor Sit: $LOREM_IPSUM_DOLOR_SIT"
+
+## Example dictionary handling
+#declare -A DICTIONARY
+#DICTIONARY=(
+#  [name]="$ENVIRONMENT_NAME"
+#  [hi]="a b c"
+#  [system_packages]="stow tmux preprocess shtab"
+#  [lorem_ipsum_dolor_sit]="$LOREM_IPSUM_DOLOR_SIT"
+#)
+#
+#echo "Dictionary contents:"
+#for KEY in "${!DICTIONARY[@]}"; do
+#  echo "$KEY: ${DICTIONARY[$KEY]}"
+#done
+
+#array_of_dict_iterate_entries "EXTERNAL_DEPENDENCY_REPOS" '
+#    name=$(array_of_dict_parse_entry "$entry" "name")
+#    repo=$(array_of_dict_parse_entry "$entry" "repo")
+#    path=$(array_of_dict_parse_entry "$entry" "path")
+#
+#    echo "Processing $name"
+#    echo "Downloading from $repo to $path..."
+#    mkdir -p "$(dirname "$path")"
+#    if curl -L -o "$path" "$repo"; then
+#        echo "$name downloaded successfully to $path."
+#    else
+#        echo "Failed to download $name."
+#    fi
+#'

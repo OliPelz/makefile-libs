@@ -5,28 +5,29 @@
 # first source our external functions
 source ${THIS_REPO_FULL_PATH}/external-deps/utility-scripts/build/__full-source.bash
 
+# source our main config file
+source ${THIS_REPO_FULL_PATH}/__config_file/main.sh
+
 log_info2 ">>> PROCESSING 0002_pre_create_dirs.sh"
-
-# mandantory
-environment_name=$(parse_yaml ".name" "$PROVISIONING_CONFIG_FULL_PATH")
-
-create_dirs=$(parse_yaml ".pre_create_dirs[]" "$PROVISIONING_CONFIG_FULL_PATH" 2>/dev/null)
 
 failed=false
 
-if test_env_variable_defined "create_dirs"; then
-    log_info "Pre-step creating dirs for ${environment_name}"
-    while IFS= read -r create_dir; do
-        log_info "Executing: mkdir ${create_dir}"
-        if eval "mkdir -p ${create_dir}"; then
-	    log_info "...Succeeded"
-        else
-	    log_error "...Failed"
-	    failed=true
-       fi
-    done <<< "${create_dirs}"
+if ! is_array_defined_nonempty "CREATE_DIRS"; then
+    log_info "No dirs to create because SYSTEM_PACKAGES is not defined or empty"
 else
-    log_info "No dirs to create found for environment: $environment_name"
+    log_info "Creating dirs for environment: $ENVIRONMENT_NAME"
+fi
+
+
+for create_dir in "${CREATE_DIRS[@]}"; do
+    log_info "Executing: mkdir ${create_dir}"
+    if eval "mkdir -p ${create_dir}"; then
+        log_info "...Succeeded"
+    else
+        log_error "...Failed"
+        failed=true
+done
+
 fi
 
 if [ "${failed}" == "true" ]; then

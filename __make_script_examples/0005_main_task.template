@@ -5,20 +5,10 @@
 # first source our external functions
 source ${THIS_REPO_FULL_PATH}/external-deps/utility-scripts/build/__full-source.bash
 
+# source our config file
+source ${THIS_REPO_FULL_PATH}/__config_file/main.sh
+
 log_info2 ">>> PROCESSING 0005_main_task.sh"
 
-# mandantory
-environment_name=$(parse_yaml ".name" "$PROVISIONING_CONFIG_FULL_PATH")
-
-# optional
-
-# Parse the YAML file to extract the system_packages for the current environment
-xxxx=$(parse_yaml ".xxxx" "$PROVISIONING_CONFIG_FULL_PATH" 2>/dev/null)
-
-# Parse the YAML file to extract the other_checks_shell for the current environment
-yyy=$(parse_yaml ".yyyyy" "$PROVISIONING_CONFIG_FULL_PATH" 2>/dev/null)
-
-
-failed=false
 
 # MAIN LOGIC FOLLOWS HERE

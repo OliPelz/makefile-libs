@@ -60,24 +60,24 @@ fi
 
 
 
-if ! check_command_installed yq; then
-	log_error "check failed, mandantory command yq is not in PATH, bailing out" 
-	has_error=true
-fi
+#if ! check_command_installed yq; then
+#	log_error "check failed, mandantory command yq is not in PATH, bailing out" 
+#	has_error=true
+#fi
 
 if [ "${has_error}" == "true" ]; then
 	exit 1
 fi
 
-if file $(which yq) | grep -q Python; then
-	log_error "please install binary version of yq, not python script, downlord from: https://github.com/mikefarah/yq"
-	exit 1
+#if file $(which yq) | grep -q Python; then
+#	log_error "please install binary version of yq, not python script, downlord from: https://github.com/mikefarah/yq"
+#	exit 1
+#
+#fi
 
-fi
-
-if check_command_installed yq && ! yq ".name" "$PROVISIONING_CONFIG_FULL_PATH" 2>&1 1>/dev/null; then
-	log_error "check failed, mandantory field .name in $PROVISIONING_CONFIG_FULL_PATH missing" 
-	exit 1
-fi
+#if check_command_installed yq && ! yq ".name" "$PROVISIONING_CONFIG_FULL_PATH" 2>&1 1>/dev/null; then
+#	log_error "check failed, mandantory field .name in $PROVISIONING_CONFIG_FULL_PATH missing" 
+#	exit 1
+#fi
 log_info "all tests passed"
 exit 0

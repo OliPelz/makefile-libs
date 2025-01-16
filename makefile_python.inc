@@ -82,3 +82,92 @@ poetry-info-2:
 	@echo "poetry run python version: $$(poetry run python --version)"
 	@echo "poetry env info: $$(poetry env info)"
 	@echo "poetry config: $$(poetry config --list)"
+
+##############################################################################
+#
+#
+# targets specific for pyenv
+#
+#
+##############################################################################
+
+
+.PHONY: check-pyenv python-versions installed-versions current-version pyenv-versions install-python set-python-local set-python-global set-python-project
+
+# Check if pyenv is installed
+check-pyenv:
+	@if command -v pyenv > /dev/null; then \
+		echo "✅ pyenv is installed"; \
+	else \
+		echo "❌ pyenv is not installed. Please install it from https://github.com/pyenv/pyenv"; \
+	fi
+
+# Print available Python versions
+python-versions:
+	@pyenv install --list
+
+# Print installed Python versions
+installed-versions:
+	@pyenv versions
+
+# Print the current Python version in use
+current-version:
+	@python --version
+
+# Print the local, global, and shell (project) Python versions
+pyenv-versions:
+	@echo "Global Python version:"; pyenv global; \
+	echo "Local Python version:"; pyenv local; \
+	echo "Shell (project) Python version:"; pyenv shell
+
+# Install a new Python version (requires PYTHON_VERSION)
+install-python:
+	@if [ -z "$(PYTHON_VERSION)" ]; then \
+		echo "❌ Please provide a PYTHON_VERSION. Usage: make install-python PYTHON_VERSION=3.x.x"; \
+	else \
+		pyenv install $(PYTHON_VERSION); \
+	fi
+
+# Set a Python version locally (requires PYTHON_VERSION)
+set-python-local:
+	@if [ -z "$(PYTHON_VERSION)" ]; then \
+		echo "❌ Please provide a PYTHON_VERSION. Usage: make set-python-local PYTHON_VERSION=3.x.x"; \
+	else \
+		pyenv local $(PYTHON_VERSION); \
+		echo "✅ Local Python version set to $(PYTHON_VERSION)"; \
+	fi
+
+# Set a Python version globally (requires PYTHON_VERSION)
+set-python-global:
+	@if [ -z "$(PYTHON_VERSION)" ]; then \
+		echo "❌ Please provide a PYTHON_VERSION. Usage: make set-python-global PYTHON_VERSION=3.x.x"; \
+	else \
+		pyenv global $(PYTHON_VERSION); \
+		echo "✅ Global Python version set to $(PYTHON_VERSION)"; \
+	fi
+
+# Set a Python version for the current shell/project (requires PYTHON_VERSION)
+set-python-project:
+	@if [ -z "$(PYTHON_VERSION)" ]; then \
+		echo "❌ Please provide a PYTHON_VERSION. Usage: make set-python-project PYTHON_VERSION=3.x.x"; \
+	else \
+		pyenv shell $(PYTHON_VERSION); \
+		echo "✅ Shell Python version set to $(PYTHON_VERSION)"; \
+	fi
+
+# Initialize pyenv in .bashrc or .zshrc
+init-pyenv:
+	@SHELL_CONFIG="$${HOME}/.bashrc"; \
+	if [ -n "$${ZSH_VERSION}" ]; then \
+		SHELL_CONFIG="$${HOME}/.zshrc"; \
+	fi; \
+	INIT_CMD="export PYENV_ROOT=\\\"$${HOME}/.pyenv\\\" && export PATH=\\\"$${PYENV_ROOT}/bin:$${PATH}\\\" && eval \\\"\\$$(pyenv init --path)\\\""; \
+	if ! grep -q "$${INIT_CMD}" "$${SHELL_CONFIG}"; then \
+		echo "Initializing pyenv in $${SHELL_CONFIG}..."; \
+		echo "" >> "$${SHELL_CONFIG}"; \
+		echo "# Pyenv initialization" >> "$${SHELL_CONFIG}"; \
+		echo "$${INIT_CMD}" >> "$${SHELL_CONFIG}"; \
+		echo "✅ pyenv initialization added to $${SHELL_CONFIG}."; \
+	else \
+		echo "✅ pyenv is already initialized in $${SHELL_CONFIG}."; \
+	fi

@@ -7,27 +7,40 @@ for fast use, copy the Makefile template and init script file to your target dir
 then run it for the first time to initalize it (never need to run again)
 
 ```bash
-$ cp Makefile.init __makefile_init_run_only_once.sh /your/brand/new/project/target/dir/
+
+$ mkdir /your/brand/new/project/target/dir/
 $ cd $_
-$ __makefile_init_run_only_once.sh
+$ curl https://raw.githubusercontent.com/OliPelz/makefile-libs/refs/heads/main/Makefile.init
+$ make -f Makefile
+
 ```
 
-this will download latest makefile-lib and create a Makefile and set it up!!!
-
-long
-```bash
-$ mkdir /tmp/new-project
-$ cp Makefile.init __makefile_init_run_only_once.sh /tmp/new-project/
-$ cd /tmp/new-project
-$ ./__makefile_init_run_only_once.sh # will prepare makefile for new project (download files)
-$ make # now a Makefile is set up
-$ make delete.it
-```
-
-NOTE: you never need to run `__makefile_init_run_only_once.sh` again! 
 
 Whenever you need to update makefile include libraries run:
 
 ```bash
-make update-make-includes 
+
+$ make update-make-includes 
+
+```
+
+if you need poetry package manager in your new app, init with
+
+```bash
+
+$ make init-poetry-for-project 
+
+```
+
+
+if you need bash utilty support enable/remove comment the section in Makefile in requirements target around the area
+
+```bash
+#$(MAKE) git-clone-or-pull \
+#    GIT_REPO_URL=https://github.com/OliPelz/utility-scripts.git \
+#	 TARGET_DIR=./external-deps/utility-scripts \
+#	 TO_GITIGNORE=true CLEAN=true \
+#	 && cd ./external-deps/utility-scripts \
+#	 && ./__makefile_init_run_only_once.sh; \
+#); \
 ```

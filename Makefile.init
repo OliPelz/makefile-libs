@@ -6,7 +6,7 @@
 #
 # instructions:
 #
-# for the first time on any vanilla project, run "make" without any target, this will download the latest colored help include lib.
+# for the first time on any vanilla project, run "make -f Makefile.init", this will download and setup the latest colored help include lib.
 # after that, you will have the colored help so running make for the second time will run it in "help" mode
 
 # Name of the include file

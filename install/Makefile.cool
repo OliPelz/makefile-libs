@@ -1,0 +1,92 @@
+# Get the absolute path of this Makefile, resolving symbolic links
+MAKEFILE_PATH := $(realpath $(lastword $(MAKEFILE_LIST)))
+
+# Get the directory of the Makefile
+MAKEFILE_DIR := $(dir $(MAKEFILE_PATH))
+
+.PHONY: show-path
+show-path:
+	@echo "Makefile Path: $(MAKEFILE_PATH)"
+	@echo "Makefile Directory: $(MAKEFILE_DIR)"
+
+
+include ./makefiles_inc/makefile_colored_help.inc
+.DEFAULT_GOAL := help
+
+# configure this git project, possible targets:
+# 
+# git-ignore-all-submodule-changes:   - configure git to ignore all submodule changes
+# git-add-hooks                       - configure to use git hooks in ./git_hooks
+configure-git-project: # git-ignore-all-submodule-changes git-add-hooks
+	#@set -e && \
+	# @echo "TO IMPLEMENT"
+
+##########################################################################################
+## prerequisites:
+requirements: configure-git-project ## install all requirements, ONLY! makefile specific
+	#@set -e && \
+	# $(MAKE) add-git-hooks && \
+	# mkdir -p ./external-deps && \
+	#( \
+	#: "Most of my projects need this collection of scripts"; \
+	#$(MAKE) git-clone-or-pull \
+	#    GIT_REPO_URL=https://github.com/OliPelz/utility-scripts.git \
+	#	 TARGET_DIR=./external-deps/utility-scripts \
+	#	 TO_GITIGNORE=true CLEAN=true \
+	#	 && cd ./external-deps/utility-scripts \
+	#	 && ./__makefile_init_run_only_once.sh; \
+    #); \
+	#( \
+	#: "some of my projects need a good arg parser for bash"; \
+	#$(MAKE) git-clone-or-pull \
+	#	GIT_REPO_URL=https://github.com/yaacov/argparse-sh.git \
+	#	TARGET_DIR=./external-deps/argparse-sh \
+	#	TO_GITIGNORE=true \
+	#	CLEAN=true; \
+	#);
+	echo "TODO: install all requirements"
+foo: ## ipsum dolor sit
+	echo "not a fool"
+bar: ### it is what it is
+	echo "not going down the bar today"
+
+##########################################################################################
+## building:
+home: ## prints home dir
+	echo $(HOME)
+lorem: ## ipsum dolor sit
+	echo "this is lorem target"
+reset.yourmum: ### it is what it is
+	echo "how about that"
+
+##########################################################################################
+## deploying:
+ipsum: #### lorem sit
+	echo "whats up?"
+convert.it: ##### i am feeling lucky
+	echo "back to basics"
+delete.it: prompt_me ### test the prompt_me target
+	echo "now delete something"
+
+
+##########################################################################################
+## xxx specific:
+install: ## install all xxx
+	@set -e && \
+	export THIS_REPO_FULL_PATH=$$PWD; \
+	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
+	for i in __make_scripts/[0-9]*.sh; do set -e && ./$$i; done
+
+clean-xxx-only: ## remove all installed xxx ONLY
+	@set -e && \
+	export THIS_REPO_FULL_PATH=$$PWD; \
+	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
+	./__make_scripts/__remove_all_xxx.sh; \
+	
+clean: ## clean all xxx
+	@set -e && \
+	export THIS_REPO_FULL_PATH=$$PWD; \
+	export XXX_FULL_PATH=$${THIS_REPO_FULL_PATH}/basic-provisioning.yaml; \
+	./__make_scripts/__remove_all_XXXX.sh; \
+	rm -rf external-deps; \
+	rm $$HOME/.env/__compiled_envs_for_shells/shell-complete-env.*;

@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# INFO: all checks and tests must go to 0000_starthere_gatekeeper.sh, nothing will be checked in the scripts
+# DOWNLOAD AND INSTALL ALL STUFF NEEDED TO RUN OR BUILD THE APPLICATION, NOT MAKEFILE SPECIFIC HERE
+
+# first source our external functions
+source ${THIS_REPO_FULL_PATH}/external-deps/utility-scripts/build/__full-source.bash
+
+# source our config file
+source ${THIS_REPO_FULL_PATH}/__config_file/main.sh
+
+log_info2 ">>> PROCESSING 0003_download_external_dependencies.sh"
+
+failed=false
+
+if ! is_array_defined_nonempty "EXTERNAL_DEPENDENCY_REPOS"; then
+    log_info "No dirs to create because SYSTEM_PACKAGES is not defined or empty"
+else
+    log_info "Managing external depencencies for environment: $ENVIRONMENT_NAME"
+fi
+
+
+for repo_dict in "${EXTERNAL_DEPENDENCY_REPOS[@]}"; do
+	log_info "cloning ${name} from repo ${repo} to ${path}"
+    name=$(array_of_dict_parse_entry "$entry" "name")
+    url=$(array_of_dict_parse_entry "$entry" "repo")
+    path=$(array_of_dict_parse_entry "$entry" "path")
+
+    git_clone_or_pull --repo_url "$url" --target_dir "$path" --clean && echo "Cloned $url to $path" || failed=true
+    failed=true
+done
+
+if [ "${failed}" == "true" ]; then
+	exit 1
+else
+	exit 0
+fi

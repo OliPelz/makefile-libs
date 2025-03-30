@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+# INFO: all checks and tests must go to 0000_starthere_gatekeeper.sh, nothing will be checked in the scripts
+
+# INFO: HERE WE CHECK FOR APPLICATION SPECIFIC DEPENDENCIES, NOT MAKEFILE SPECIFIC!
+
+# first source our external functions
+source ${THIS_REPO_FULL_PATH}/external-deps/utility-scripts/build/__full-source.bash
+
+# source our main config file
+source ${THIS_REPO_FULL_PATH}/__config_file/main.sh
+
+log_info2 ">>> PROCESSING 0001_check_requirements.sh"
+
+failed=false
+
+log_info "Checking if system packages are installed for environment: $ENVIRONMENT_NAME"
+
+if ! is_array_defined_nonempty "SYSTEM_PACKAGES"; then
+    log_info "No system packages to install because SYSTEM_PACKAGES is not defined or empty"
+else
+    log_info "Installing system checks for environment: $ENVIRONMENT_NAME"
+fi
+
+
+for PACKAGE in "${SYSTEM_PACKAGES[@]}"; do
+    log_info "Checking if cmd is available '$PACKAGE': "
+    if check_command_installed "$PACKAGE"; then
+        log_info "...Installed"
+    else
+        log_error "...Not installed"
+        failed=true
+    fi
+done
+
+if ! is_array_defined_nonempty "OTHER_SHELL_CHECKS"; then
+    log_info "No additional checks to perform for environment: $ENVIRONMENT_NAME"
+else
+    log_info "Running additional checks for environment: $ENVIRONMENT_NAME"
+fi
+
+
+# Perform other checks using shell commands
+for CMD in "${OTHER_SHELL_CHECKS[@]}"; do
+    log_info "Executing: '${CMD}'"
+    if eval "${CMD}"; then
+        log_info "...Succeeded"
+    else
+        log_error "...Failed"
+        failed=true
+    fi
+done
+
+if [ "${failed}" == "true" ]; then
+	exit 1
+else
+	exit 0
+fi

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#set -x
+# INFO: all checks and tests must go to 0000_starthere_gatekeeper.sh, nothing will be checked in the scripts
+
+# first source our external functions
+source ${THIS_REPO_FULL_PATH}/external-deps/utility-scripts/build/__full-source.bash
+
+# source our config file
+source ${THIS_REPO_FULL_PATH}/__config_file/main.sh
+
+log_info2 ">>> PROCESSING 0005_main_task.sh"
+
+
+# MAIN LOGIC FOLLOWS HERE
